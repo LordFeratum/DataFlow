@@ -1,0 +1,2 @@
+class NoEventLoopDefined(Exception):
+    pass

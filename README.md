@@ -16,6 +16,29 @@ Flow.from_enumerable([1, 2, 3, 4])\
 # 2, 4, 6, 8
 ```
 
+# Async Support
+
+From v0.3 DataFlow has async/await support for Python >=3.5. The inclusion of Python3.5 forced me to drop the support
+of lazyness in AsyncEnum. From Python3.6 this support will become to life again.
+
+``` python
+from asyncio import get_event_loop
+
+loop = get_event_loop()
+
+async def by_two(n):
+    return n * 2
+
+Flow.from_enumerable([1, 2, 3, 4], loop)\
+>> Enum.map(lambda x: x * 2)\
+>> AsyncEnum.map(by_two)\
+>> Enum.map(lambda x: x * 2)\
+>> AsyncEnum.map(by_two)\
+>> Promise.as_list
+
+# [16, 32, 48, 64, 80]
+```
+
 # Enum Module
 
 In Enum module you can find functions wich works with enumerates.
@@ -119,6 +142,17 @@ Flow.from_enumerable([('A', 1), ('B', 0), ('C', 3), ('D', 2)])\
 # [('C', 3), ('D', 2), ('A', 1), ('B', 0)]
 ```
 
+# AsyncEnum
+
+AsyncEnum module gives you support to transform data with asynchronous functions. The implemented methods are:
+* AsyncEnum.map
+* AsyncEnum.flat_map
+* AsyncEnum.filter
+* AsyncEnum.reduce
+* AsyncEnum.dropwhile
+* AsyncEnum.takewhile
+
+
 # String module
 
 In the String module you can find functions to manipulate strings.
@@ -199,4 +233,16 @@ Flow.from_enumerable([1, 2, 3])\
 >> Promise.as_list
 
 # [4, 8, 12]
+```
+
+With async/await support:
+
+``` python
+class MyAsyncModule:
+    @staticmethod
+    def multiply(n):
+        async def _multiply(data):
+	    data = [await awesome_multiplier(datum, n) for datum in data]
+	    return Flow(data)
+	return _multiply
 ```
