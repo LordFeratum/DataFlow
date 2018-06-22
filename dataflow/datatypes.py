@@ -1,4 +1,4 @@
-from itertools import chain, zip_longest
+from itertools import chain, zip_longest, dropwhile, takewhile
 from functools import reduce
 
 from .flow import Flow
@@ -36,6 +36,24 @@ class Enum:
             args = [iter(data)] * n
             return Flow(zip_longest(*args, fillvalue=fillvalue))
         return _grouper
+
+    @staticmethod
+    def dropwhile(transform):
+        def _dropwhile(data):
+            return Flow(dropwhile(transform, data))
+        return _dropwhile
+
+    @staticmethod
+    def takewhile(transform):
+        def _takewhile(data):
+            return Flow(takewhile(transform, data))
+        return _takewhile
+
+    @staticmethod
+    def sort(key=None, reverse=False):
+        def _sort(data):
+            return Flow(sorted(data, key=key, reverse=reverse))
+        return _sort
 
 
 class String:

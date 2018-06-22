@@ -80,6 +80,45 @@ Flow.from_enumerable([1, 2, 3])\
 # 6
 ```
 
+## Enum.dropwhile
+
+This function takes another function that drops elements until the condition returns False.
+
+``` python
+Flow.from_enumerable([1, 2, 3, 4])\
+>> Enum.dropwhile(lambda x: x < 3)\
+>> Promise.as_list
+
+# [3, 4]
+```
+
+## Enum.takewhile
+
+This functions is the inverted version of Enum.dropwhile. That functions take elements of the iterable until
+the condition is False.
+
+``` python
+Flow.from_enumerable([1, 2, 3, 4])\
+>> Enum.takewhile(lambda x: x < 3)\
+>> Promise.as_list
+
+# [1, 2]
+```
+
+## Enum.sort
+
+This function sort any collection of items. You can set the key to sort by and if you what it reversed or not.
+
+``` python
+from operator import itemgetter
+
+Flow.from_enumerable([('A', 1), ('B', 0), ('C', 3), ('D', 2)])\
+>> Enum.sort(key=itemgetter(1), reverse=True)\
+>> Promise.as_list
+
+# [('C', 3), ('D', 2), ('A', 1), ('B', 0)]
+```
+
 # String module
 
 In the String module you can find functions to manipulate strings.
