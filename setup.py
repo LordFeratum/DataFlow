@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="DataFlow",
+    name="data_flow",
     version="0.3",
     description="A system transform data consistently and easily",
     packages=["dataflow"],
